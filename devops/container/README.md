@@ -12,6 +12,8 @@
   limitations under the License.
 -->
 
+## Building the development container
+
 A reproducible [GNU Guix](https://guix.gnu.org) Linux container can be created
 with a channels file listing the source repository and commit ID as well as a
 manifest file listing the set of packages to be installed.
@@ -93,4 +95,46 @@ docker run -it \
   --mount "type=bind,source=${PROJECT},target=/tmp/${PROJECT}" \
   "ghcr.io/${GROUP}/${PROJECT}:${VERSION}" \
   bash
+```
+
+## Building the release package
+
+This project can be built as a [GNU Guix](https://guix.gnu.org) package.
+
+```console
+guix build --manifest=release-manifest.scm
+```
+
+The Guix package definition contains the hash of the project source, so must be
+updated in a subsequent commit to the tagged release.
+
+During development the package can be built using the local source directory.
+
+```console
+guix build --manifest=release-manifest.scm --with-source=../../../factorial
+```
+
+## Building the release container
+
+The package manifest can also be built as a deployment container.
+
+```console
+guix time-machine \
+  --channels=channels.scm \
+  -- pack \
+    --format=docker \
+    --compression=xz \
+    --save-provenance \
+    --symlink=/bin=bin \
+    --symlink=/sbin=sbin \
+    --system=x86_64-linux \
+    --manifest=release-manifest.scm
+```
+
+The container can then be loaded and the program executed.
+
+```console
+docker load < /gnu/store/...-factorial-docker-pack.tar.xz
+docker run -it factorial hello
+> Hello, World!
 ```
