@@ -29,5 +29,9 @@
  (list
   (specifications->manifest
    '(;; Project dependencies
-     ))
+     "cxxopts"
+     "gmp"
+     "googlebenchmark"
+     "googletest"
+     "spdlog"))
   base-packages))

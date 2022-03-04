@@ -21,28 +21,30 @@
 ;; command-line utilities for use by a developer in an interactive shell.
 
 (use-modules
- (gnu packages base))
+ (guix packages)
+ (guix utils)
+ (gnu packages cmake))
 
-(define custom-utf8-locales
-  (make-glibc-utf8-locales
-   glibc
-   #:locales (list "en_US")
-   #:name "custom-utf8-locales"))
+(define-public cmake-latest
+  (package
+    (inherit cmake)
+    (version "3.21.5")
+    (source (origin
+              (inherit (package-source cmake))
+              (uri (string-append "https://cmake.org/files/v"
+                                  (version-major+minor version)
+                                  "/cmake-" version ".tar.gz"))
+              (sha256 (base32 "0zw9525drfgjhsbgqcay940g4gvl29mja7hakz05czc2mfsqfdf7"))))))
 
 (define base-packages
   (concatenate-manifests
    (list
-    (packages->manifest
-     `(;; Custom locales
-       ,custom-utf8-locales))
     (specifications->manifest
      '(;; Packages supporting compilation.
        "clang-toolchain"
-       "cmake"
-       "gcc-toolchain"
+       "gcc-toolchain@10"
        "make"
        "ninja"
-       "pkg-config"
 
        ;; Packages for interactive user access.
        "bash"
@@ -60,5 +62,7 @@
 
        ;; Packages supporting IDEs.
        "openssh"
-       "rsync"
-       "which")))))
+       "which"))
+    (packages->manifest
+     `(;; Custom package releases
+       ,cmake-latest)))))

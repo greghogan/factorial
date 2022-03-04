@@ -16,14 +16,23 @@ project(factorial LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 
 # run clang-tidy as part of the compilation process
-set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+#set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 
 # warnings can be safely and sanely turned into errors since the exact compiler
 # version is specified by the GNU Guix channel and manifest used to create the
 # container used for development and testing
-add_compile_options(-Wall -Wextra -Werror)
+#add_compile_options(-Wall -Wextra -Werror)
 
 enable_testing()
+
+include_directories(factorial)
+
+# library dependencies
+find_package(GTest REQUIRED)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GMP REQUIRED gmp gmpxx)
+
 
 add_subdirectory(factorial)
 

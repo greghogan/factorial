@@ -10,4 +10,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_subdirectory(factorial)
+add_executable(factorial main.cpp)
+target_link_libraries(factorial ${GMP_LIBRARIES})
+
+install(TARGETS factorial DESTINATION bin)
+
+add_executable(factorial.test factorial.test.cpp)
+target_link_libraries(factorial.test ${GMP_LIBRARIES} GTest::gtest GTest::gtest_main)
+
+add_test(AllTestsInFactorial factorial.test)

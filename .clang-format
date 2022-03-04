@@ -13,3 +13,11 @@
 ---
 Language: Cpp
 BasedOnStyle: Google
+
+IncludeCategories:
+  - Regex: '^<factorial/.*'
+    Priority: 1
+  - Regex: '^<.*\.hp*>'
+    Priority: 2
+  - Regex: '^<.*'
+    Priority: 3

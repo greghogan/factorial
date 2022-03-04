@@ -22,7 +22,7 @@ jobs:
         build_type: ["Debug", "RelWithDebInfo"]
         generator: ["Ninja", "Unix Makefiles"]
         compiler: ["clang", "gcc"]
-        container_version: [20220301]
+        container_version: [20220303]
 
     container: ghcr.io/${{ github.repository }}:${{ matrix.container_version }}
 
