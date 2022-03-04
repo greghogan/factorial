@@ -12,9 +12,27 @@
  * limitations under the License.
  */
 
-#include <iostream>
+#include <gmpxx.h>
 
-int main() {
-  std::cout << "Hello, World!" << std::endl;
-  return 0;
+uint64_t factorial_naive(uint64_t number) {
+  uint64_t result = 1;
+  while (number > 1) {
+    result *= number;
+    number--;
+  }
+  return result;
+}
+
+mpz_class factorial_gmp_loop(uint64_t number) {
+  mpz_class result = 1;
+  while (number > 1) {
+    result *= number;
+    number--;
+  }
+  return result;
+}
+
+mpz_class factorial_gmp(uint64_t number) {
+  mpz_class result;
+  return result.factorial(number);
 }

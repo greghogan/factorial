@@ -35,7 +35,11 @@
  (list
   (specifications->manifest
    '(;; Project dependencies
-     ))
+     "cxxopts"
+     "gmp"
+     "googlebenchmark"
+     "googletest"
+     "spdlog"))
   (packages->manifest
    `(;; Custom locales
      ,custom-utf8-locales))

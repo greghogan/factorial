@@ -20,31 +20,49 @@
 ;; either gcc or clang, make or ninja, and gdb or lldb. Also included are a
 ;; command-line utilities for use by a developer in an interactive shell.
 
+(use-modules
+ (guix packages)
+ (guix utils)
+ (gnu packages cmake))
+
+(define-public cmake-latest
+  (package
+    (inherit cmake)
+    (version "3.21.5")
+    (source (origin
+              (inherit (package-source cmake))
+              (uri (string-append "https://cmake.org/files/v"
+                                  (version-major+minor version)
+                                  "/cmake-" version ".tar.gz"))
+              (sha256 (base32 "0zw9525drfgjhsbgqcay940g4gvl29mja7hakz05czc2mfsqfdf7"))))))
+
 (define base-packages
-  (specifications->manifest
-   '(;; Packages supporting compilation.
-     "clang-toolchain"
-     "cmake"
-     "gcc-toolchain@10"
-     "make"
-     "ninja"
-     "pkg-config"
+  (concatenate-manifests
+   (list
+    (specifications->manifest
+     '(;; Packages supporting compilation.
+       "clang-toolchain"
+       "gcc-toolchain@10"
+       "make"
+       "ninja"
 
-     ;; Packages for interactive user access.
-     "bash"
-     "binutils"
-     "coreutils"
-     "diffutils"
-     "findutils"
-     "gdb"
-     "git"
-     "grep"
-     "less"
-     "lldb"
-     "patch"
-     "vim"
+       ;; Packages for interactive user access.
+       "bash"
+       "binutils"
+       "coreutils"
+       "diffutils"
+       "findutils"
+       "gdb"
+       "git"
+       "grep"
+       "less"
+       "lldb"
+       "patch"
+       "vim"
 
-     ;; Packages supporting IDEs.
-     "openssh"
-     "rsync"
-     "which")))
+       ;; Packages supporting IDEs.
+       "openssh"
+       "which"))
+    (packages->manifest
+     `(;; Custom package releases
+       ,cmake-latest)))))
